@@ -1,0 +1,24 @@
+services:
+  db:
+    container_name: db
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: test_db
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+
+  app:
+    container_name: app
+    build : ./application/
+    image : app:aamhamdi
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    depends_on:
+      - db
+    volumes:
+      - ${PWD}/application:/application
+    
