@@ -1,8 +1,6 @@
 // import bcrypt from 'bcrypt';
 const connection_Pool = require('../../db')
-// import { invoices, customers, revenue, users } from '../lib/placeholder-data';
 
-// const client = await db.connect();
 
 const users = [
     {
@@ -12,6 +10,29 @@ const users = [
       password: '123456',
     },
   ];
+
+const offers = [
+  {
+    id : "510544b2-4001-4271-9855-fec4b6a6442a",
+    userid : "410544b2-4001-4271-9855-fec4b6a6442a",
+    description : 'test',
+    title : 'data sience',
+    ststus : 'closed',
+    type : 'fulltime'
+  },
+
+  
+]
+
+const applicants = [
+ {
+    id : "810544b2-4001-4271-9855-fec4b6a6442a",
+    userid : "410544b2-4001-4271-9855-fec4b6a6442a",
+    offerid : "510544b2-4001-4271-9855-fec4b6a6442a",
+    status : 'pending',
+  },
+]
+
 
 async function seedUsers() {
   await connection_Pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
@@ -37,94 +58,70 @@ async function seedUsers() {
   return insertedUsers;
 }
 
-// async function seedInvoices() {
-//   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+async function seedOffers() {
+  await connection_Pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
 
-//   await client.sql`
-//     CREATE TABLE IF NOT EXISTS invoices (
-//       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-//       customer_id UUID NOT NULL,
-//       amount INT NOT NULL,
-//       status VARCHAR(255) NOT NULL,
-//       date DATE NOT NULL
-//     );
-//   `;
+  await connection_Pool.query(`
+    CREATE TABLE IF NOT EXISTS offers (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      user_id UUID NOT NULL,
+      description TEXT NOT NULL,
+      status VARCHAR(255) NOT NULL,
+      type VARCHAR(255) NOT NULL,
+      title VARCHAR(255) NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id)
+    );
+  `);
 
-//   const insertedInvoices = await Promise.all(
-//     invoices.map(
-//       (invoice) => client.sql`
-//         INSERT INTO invoices (customer_id, amount, status, date)
-//         VALUES (${invoice.customer_id}, ${invoice.amount}, ${invoice.status}, ${invoice.date})
-//         ON CONFLICT (id) DO NOTHING;
-//       `,
-//     ),
-//   );
+  const insertedOffers = await Promise.all(
+    offers.map(
+      async (offer) => connection_Pool.query(`
+        INSERT INTO offers (id, user_id, description, title, status, type)
+        VALUES ($1, $2, $3, $4, $5, $6)
+        ON CONFLICT (id) DO NOTHING;
+      `, [offer.id, offer.userid, offer.description, offer.title, offer.ststus, offer.type]),
+    ),
+  );
 
-//   return insertedInvoices;
-// }
+  return insertedOffers;
+}
 
-// async function seedCustomers() {
-//   await client.sql`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`;
+async function seedApplicants() {
+  await connection_Pool.query(`CREATE EXTENSION IF NOT EXISTS "uuid-ossp"`);
 
-//   await client.sql`
-//     CREATE TABLE IF NOT EXISTS customers (
-//       id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
-//       name VARCHAR(255) NOT NULL,
-//       email VARCHAR(255) NOT NULL,
-//       image_url VARCHAR(255) NOT NULL
-//     );
-//   `;
+  await connection_Pool.query(`
+    CREATE TABLE IF NOT EXISTS applicants (
+      id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+      user_id UUID NOT NULL,
+      offer_id UUID NOT NULL,
+      status VARCHAR(255) NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id),
+      FOREIGN KEY (offer_id) REFERENCES offers(id)
+    );
+  `);
 
-//   const insertedCustomers = await Promise.all(
-//     customers.map(
-//       (customer) => client.sql`
-//         INSERT INTO customers (id, name, email, image_url)
-//         VALUES (${customer.id}, ${customer.name}, ${customer.email}, ${customer.image_url})
-//         ON CONFLICT (id) DO NOTHING;
-//       `,
-//     ),
-//   );
+  const insertedApplicants = await Promise.all(
+    applicants.map(
+      (app) => connection_Pool.query(`
+        INSERT INTO applicants (id, user_id, offer_id, status)
+        VALUES ($1, $2, $3, $4)
+        ON CONFLICT (id) DO NOTHING;
+      `, [app.id, app.userid, app.offerid, app.status]),
+    ),
+  );
 
-//   return insertedCustomers;
-// }
+  return insertedApplicants;
+}
 
-// async function seedRevenue() {
-//   await client.sql`
-//     CREATE TABLE IF NOT EXISTS revenue (
-//       month VARCHAR(4) NOT NULL UNIQUE,
-//       revenue INT NOT NULL
-//     );
-//   `;
-
-//   const insertedRevenue = await Promise.all(
-//     revenue.map(
-//       (rev) => client.sql`
-//         INSERT INTO revenue (month, revenue)
-//         VALUES (${rev.month}, ${rev.revenue})
-//         ON CONFLICT (month) DO NOTHING;
-//       `,
-//     ),
-//   );
-
-//   return insertedRevenue;
-// }
 
 export async function GET() {
-  // return Response.json({
-  //   message:
-  //     'Uncomment this file and remove this line. You can delete this file when you are finished.',
-  // });
-  try {
-    // await connection_Pool.query(`BEGIN`);
-    await seedUsers();
-    // await seedCustomers();
-    // await seedInvoices();
-    // await seedRevenue();
-    // await connection_Pool.query(`COMMIT`);
 
+  try {
+    await seedUsers();
+    await seedApplicants()
+    await seedOffers();
     return Response.json({ message: 'Database seeded successfully' });
   } catch (error) {
-    // await connection_Pool.query(`ROLLBACK`);
     return Response.json({ error }, { status: 500 });
   }
 }
