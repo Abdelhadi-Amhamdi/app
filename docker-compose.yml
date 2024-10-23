@@ -16,9 +16,8 @@ services:
     image : app:aamhamdi
     ports:
       - 3000:3000
-    restart: unless-stopped
     depends_on:
       - db
     volumes:
-      - ${PWD}/application:/application
+      - ./application:/application
     
