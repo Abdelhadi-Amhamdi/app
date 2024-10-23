@@ -1,10 +1,59 @@
 
-export default function Page() {
+import { fetchJobs, searchJob } from "app/app/lib/data";
+import Search from "app/app/ui/search";
+import { LuUserCheck2 } from "react-icons/lu";
+
+export default async function Page(props : {searchParams? : Promise<{query? : string}>}) {
+
+  const searchParams = await props.searchParams
+  let data = null
+  if (searchParams?.query) {
+    data = await searchJob(searchParams.query)
+    
+  } else {
+    data = await fetchJobs()
+  }
 
     return (
       <div className="w-full">
         <div className="h-[100px] flex items-center px-10 border-b-1 border-black/10">
             <h1 className="uppercase text-2xl font-bold">Find Jobs</h1>
+        </div>
+        <div className="flex mt-4">
+          <div className="flex-grow mr-2">
+            <Search placeholder="search..." />
+          </div>
+        </div>
+        <div className="mt-6 h-full">
+          <table className="w-full p-4">
+            <thead className="h-[40px] bg-gray-600 rounded text-white">
+              <tr className="uppercase w-full">
+                <th>title</th>
+                <th>desc</th>
+                <th>type</th>
+                <th>status</th>
+                <th>actions</th>
+              </tr>
+            </thead>
+            <tbody className="">
+              {
+                data?.map((offer, index : number) => {
+                  return (<tr key={index} className="capitalize h-[60px] text-center">
+                    <td>{offer.title}</td>
+                    <td>{offer.description}</td>
+                    <td>{offer.type}</td>
+                    <td>{offer.status}</td>
+                    <td className="h-[60px] flex justify-evenly items-center">
+                      <button className="bg-gray-600 text-white h-[35px] w-[100px] p-2 rounded flex justify-center items-center">
+                        <span className="mr-2">applay</span>
+                        <LuUserCheck2 />
+                      </button>
+                    </td>
+                  </tr>)
+                })
+              }
+            </tbody>
+          </table>
         </div>
       </div>  
     );

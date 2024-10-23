@@ -19,3 +19,12 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+table th:first-child{
+  border-radius:4px 0 0 4px;
+}
+
+table th:last-child{
+  border-radius:0 4px 4px 0;
+}
