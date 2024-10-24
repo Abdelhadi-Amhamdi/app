@@ -6,8 +6,7 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: root
       POSTGRES_DB: test_db
-    ports:
-      - 5432:5432
+
 
   app:
     container_name: app
@@ -17,6 +16,4 @@ services:
       - 3000:3000
     depends_on:
       - db
-    # volumes:
-    #   - ./application:/application
     
