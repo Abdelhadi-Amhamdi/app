@@ -1,15 +1,14 @@
-
-import { fetchJobs, searchJob } from "app/app/lib/data";
+import { fetchJobs, searchJob } from "app/app/data/data";
+import JobsTable from "app/app/ui/dashboard/jobs/JobTable";
 import Search from "app/app/ui/search";
-import { LuUserCheck2 } from "react-icons/lu";
+import { OfferType } from "app/Types";
 
 export default async function Page(props : {searchParams? : Promise<{query? : string}>}) {
 
   const searchParams = await props.searchParams
-  let data = null
+  let data : OfferType[] | null = null
   if (searchParams?.query) {
     data = await searchJob(searchParams.query)
-    
   } else {
     data = await fetchJobs()
   }
@@ -25,35 +24,7 @@ export default async function Page(props : {searchParams? : Promise<{query? : st
           </div>
         </div>
         <div className="mt-6 h-full">
-          <table className="w-full p-4">
-            <thead className="h-[40px] bg-gray-600 rounded text-white">
-              <tr className="uppercase w-full">
-                <th>title</th>
-                <th>desc</th>
-                <th>type</th>
-                <th>status</th>
-                <th>actions</th>
-              </tr>
-            </thead>
-            <tbody className="">
-              {
-                data?.map((offer, index : number) => {
-                  return (<tr key={index} className="capitalize h-[60px] text-center">
-                    <td>{offer.title}</td>
-                    <td>{offer.description}</td>
-                    <td>{offer.type}</td>
-                    <td>{offer.status}</td>
-                    <td className="h-[60px] flex justify-evenly items-center">
-                      <button className="bg-gray-600 text-white h-[35px] w-[100px] p-2 rounded flex justify-center items-center">
-                        <span className="mr-2">applay</span>
-                        <LuUserCheck2 />
-                      </button>
-                    </td>
-                  </tr>)
-                })
-              }
-            </tbody>
-          </table>
+          <JobsTable data={data!} />
         </div>
       </div>  
     );

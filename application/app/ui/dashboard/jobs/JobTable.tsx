@@ -1,7 +1,8 @@
 import Link from "next/link"
 import ApplyButton from "./ApplyBtn"
+import { OfferType } from "app/Types"
 
-export default function JobsTable({data} : {data: any}) {
+export default function JobsTable({data} : {data: OfferType[]}) {
     return (
         <table className="w-full p-4">
         <thead className="h-[40px] bg-gray-600 rounded text-white">
@@ -15,14 +16,17 @@ export default function JobsTable({data} : {data: any}) {
         </thead>
         <tbody className="">
           {
-            data?.map(offer => {
-              return (<tr key={offer.id} className="font-light text-sm h-[60px] text-center">
-                <td><Link href={`/dashboard/offers/${offer.id}`}>{offer.title}</Link></td>
-                <td>{offer.description.substring(0, 20)}</td>
-                <td>{offer.type}</td>
-                <td>{offer.status}</td>
+            data?.map((job : OfferType) => {
+              return (
+              <tr key={job.id} className="font-light text-sm h-[60px] text-center">
+                <td>
+                  <Link href={`/dashboard/offers/${job.id}`}>{job.title}</Link>
+                </td>
+                <td>{job.description.substring(0, 20)}</td>
+                <td>{job.type}</td>
+                <td>{job.status}</td>
                 <td className="h-[60px] flex justify-evenly items-center">
-                  <ApplyButton id={offer.id} />
+                  <ApplyButton id={job.id} />
                 </td>
               </tr>)
             })

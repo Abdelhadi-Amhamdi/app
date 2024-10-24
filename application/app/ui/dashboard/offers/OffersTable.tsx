@@ -1,8 +1,9 @@
 import { MdOutlineEditRoad } from "react-icons/md"
 import DeleteOffer from "./DeleteOffer"
 import Link from "next/link"
+import { OfferType } from "app/Types"
 
-export default function OffersTable({data} : {data: any}) {
+export default function OffersTable({data} : {data: OfferType[]}) {
     return (
         <table className="w-full p-4">
         <thead className="h-[40px] bg-gray-600 rounded text-white">
@@ -16,8 +17,9 @@ export default function OffersTable({data} : {data: any}) {
         </thead>
         <tbody className="">
           {
-            data?.map((offer, index : number) => {
-              return (<tr key={index} className="font-light text-sm h-[60px] text-center ">
+            data?.map((offer : OfferType) => {
+              return (
+              <tr key={offer.id} className="font-light text-sm h-[60px] text-center">
                 <td><Link href={`offers/${offer.id}`}>{offer.title}</Link></td>
                 <td>{offer.description.substring(0, 20)}</td>
                 <td>{offer.type}</td>

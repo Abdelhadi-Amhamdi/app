@@ -1,6 +1,7 @@
 import { ImCancelCircle } from 'react-icons/im';
 import { fetchApplicants } from '../../data/data';
 import { cancelApplicant } from 'app/app/data/actions';
+import { ApplicantType } from 'app/Types';
 
 
 export async function CancelApplicantBtn({ id } : {id : string}) {
@@ -33,14 +34,14 @@ export default async function Applicants() {
                 </thead>
                 <tbody className="">
                 {
-                    data?.map((offer, index : number) => {
-                    return (<tr key={index} className="font-light text-sm h-[60px] text-center">
-                        <td>{offer.title}</td>
-                        <td>{offer.description.substring(0, 20)}</td>
-                        <td>{offer.type}</td>
-                        <td>{offer.status}</td>
+                    data?.map((applicant : ApplicantType) => {
+                    return (<tr key={applicant.id} className="font-light text-sm h-[60px] text-center">
+                        <td>{applicant.title}</td>
+                        <td>{applicant.description.substring(0, 20)}</td>
+                        <td>{applicant.type}</td>
+                        <td>{applicant.status}</td>
                         <td className="h-[60px] flex justify-evenly items-center">
-                            <CancelApplicantBtn id={offer.applicant_id} />
+                            <CancelApplicantBtn id={applicant.applicant_id} />
                         </td>
                     </tr>)
                     })

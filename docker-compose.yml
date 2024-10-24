@@ -6,7 +6,6 @@ services:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: root
       POSTGRES_DB: test_db
-    restart: unless-stopped
     ports:
       - 5432:5432
 

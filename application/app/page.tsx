@@ -1,10 +1,3 @@
-import NavBar from "./ui/NavBar";
-
-export default function Home() {
-  return (
-    <div>
-      <NavBar />
-      
-    </div>
-  );
+export default async function Home() {
+    return (<></>)
 }

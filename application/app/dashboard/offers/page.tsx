@@ -1,20 +1,19 @@
-import { fetchOffers, serachOffers } from "app/app/lib/data";
-import { CreateOffer } from "app/app/ui/Buttons";
+
+import { fetchOffers, serachOffers } from "app/app/data/data";
+import { CreateOffer } from "app/app/ui/dashboard/offers/CreateOfferBtn";
+import OffersTable from "app/app/ui/dashboard/offers/OffersTable";
 import Search from "app/app/ui/search";
-import { FaTrash } from "react-icons/fa6";
-import { MdOutlineEditRoad } from "react-icons/md";
+import { OfferType } from "app/Types";
 
 export default async function Page(props : {searchParams ? : Promise<{query?: string}>}) {
 
     const searchParams = await props.searchParams
-    let data = null;
+    let data : OfferType[] | null = null;
     if (searchParams?.query) {
       data = await serachOffers(searchParams.query)
     } else {
       data = await fetchOffers()
     }
-
-    console.log(data)
 
     return (
       <div className="w-full">
@@ -30,37 +29,7 @@ export default async function Page(props : {searchParams ? : Promise<{query?: st
           </div>
         </div>
         <div className="mt-6 h-full">
-          <table className="w-full p-4">
-            <thead className="h-[40px] bg-gray-600 rounded text-white">
-              <tr className="uppercase w-full">
-                <th>title</th>
-                <th>desc</th>
-                <th>type</th>
-                <th>status</th>
-                <th>actions</th>
-              </tr>
-            </thead>
-            <tbody className="">
-              {
-                data?.map((offer, index : number) => {
-                  return (<tr key={index} className="capitalize h-[60px] text-center">
-                    <td>{offer.title}</td>
-                    <td>{offer.description}</td>
-                    <td>{offer.type}</td>
-                    <td>{offer.status}</td>
-                    <td className="h-[60px] flex justify-evenly items-center">
-                    <button className=" h-[35px] p-2 rounded flex justify-center items-center">
-                        <MdOutlineEditRoad />
-                    </button>
-                    <button className=" h-[35px] p-2 rounded flex justify-center items-center">
-                        <FaTrash />
-                    </button>
-                    </td>
-                  </tr>)
-                })
-              }
-            </tbody>
-          </table>
+          <OffersTable data={data!} />
         </div>
       </div>  
     );

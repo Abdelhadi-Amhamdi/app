@@ -10,6 +10,4 @@ const connectionPool = new Pool({
     port: 5432,
 })
 
-console.log(process.env.POSTGRES_URL)
-
 module.exports = connectionPool
