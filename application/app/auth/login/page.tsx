@@ -1,6 +1,4 @@
-
-
-import { loguser } from "app/app/lib/actions";
+import { loguser } from "app/app/data/actions";
 import Link from "next/link";
 
 export default function Page() {

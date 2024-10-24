@@ -1,4 +1,4 @@
-import { createUser } from "app/app/lib/actions";
+import { createUser } from "app/app/data/actions";
 import Link from "next/link";
 
 export default function Page() {
