@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "seed": "ts-node ./app/seed/route.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
@@ -18,6 +19,7 @@
     "react": "19.0.0-rc-65a56d0e-20241020",
     "react-dom": "19.0.0-rc-65a56d0e-20241020",
     "react-icons": "^5.3.0",
+    "ts-node": "^10.9.2",
     "use-debounce": "^10.0.4"
   },
   "devDependencies": {

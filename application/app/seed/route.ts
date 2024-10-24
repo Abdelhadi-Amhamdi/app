@@ -44,7 +44,7 @@ async function seedApplicants() {
 }
 
 
-export async function GET() {
+async function GET() {
   try {
     await seedUsers();
     await seedOffers();
@@ -54,3 +54,5 @@ export async function GET() {
     return Response.json({ error }, { status: 500 });
   }
 }
+
+GET()

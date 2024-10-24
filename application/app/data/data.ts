@@ -13,8 +13,7 @@ export async function fetchOffers() {
 
         return data.rows
     } catch(err) {
-        console.log(err);
-        throw new Error('Failed to fetch offers data.');
+
     }
 }
 
@@ -27,8 +26,7 @@ export async function serachOffers(query : string) {
           );
         return data.rows;
     } catch(err) {
-        console.log(err);
-        throw new Error('Failed to fetch offers data.');
+
     }
 }
 
@@ -40,7 +38,7 @@ export async function fetchOfferById(id : string) {
             );
             return data.rows[0];
         } catch (err) {
-            console.log(err);
+
         }
 }
 
@@ -56,8 +54,7 @@ export async function fetchJobs() {
           );
         return data.rows;
     } catch(err) {
-        console.log(err);
-        throw new Error('Failed to fetch offers data.');
+
     }
 }
 
@@ -70,8 +67,7 @@ export async function searchJob(query : string) {
           );
         return data.rows;
     } catch(err) {
-        console.log(err);
-        throw new Error('Failed to fetch offers data.');
+
     }
 }
 
@@ -88,17 +84,17 @@ export async function fetchApplicants() {
           );
         return data.rows;
     } catch(err) {
-        console.log(err);
-        throw new Error('Failed to fetch offers data.');
+
     }
 }
 
 
 export async function getMyStatus() {
 
-    const token = (await cookies()).get('token')
-    const { id } = jwt.verify(token?.value, "secret")
     try {
+        const token = (await cookies()).get('token')
+        const { id } = jwt.verify(token?.value, "secret")
+
         const num_applicants = connectionPool.query(`
             SELECT COUNT(*) FROM applicants WHERE user_id = $1
         `, [id])
@@ -131,6 +127,5 @@ export async function getMyStatus() {
         pending
        }
     } catch (err) {
-        console.log(err)
     }
 }

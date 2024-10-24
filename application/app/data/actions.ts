@@ -54,13 +54,13 @@ export async function loguser(formData : FormData) {
                 path : '/',
                 sameSite : 'strict'
             })
+            redirect('/dashboard')
         } else {
             throw Error("invalid credinetials")
         }
     } catch(error) {
         
     }
-    redirect('/dashboard')
 }
 
 export async function createOffer(formData : FormData) {
